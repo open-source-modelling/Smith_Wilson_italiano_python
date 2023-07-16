@@ -4,18 +4,18 @@
 l'interpolazione e l'estrapolazione dei tassi. Questa implementazione si basa sulla documentazione tecnica di EIOPA 
 per derivare la struttura a termine dei tassi di interesse (versione pubblicata il 12/09/2019).
 """
+
 ## Esempio
 """Questo esempio è basatu sul implementazione di Excel di EIOPA (Smith-Wilson Risk-Free Interest Rate Extrapolation Tool 27102015.xlsb). 
 In questo esempio abbiamo osservato i tassi dei titoli di stato zero-coupon per titoli che maturano in 1 anno, 2 anni, ..., 20 anni.
 Siamo interessati a estrapolare la curva fino a 65 anni.
 Per rendere il codice più leggibile, viene utilizzata la libreria numpy per la moltiplicazione di matrici."""
 
-
 import numpy as np
-from SWCalibrate import SWCalibrate as SWCalibrate
-from SWExtrapolate import SWExtrapolate as SWExtrapolate
+from SWCalibrazione import SWCalibrazione as SWCalibrazione
+from SWEstrapolazione import SWEstrapolazione as SWEstrapolazione
 
-## Inputs
+## Argomenti:
 #   - Tassi spot osservati (r_Obs)
 #   - Scadenze per i tassi spot osservati (M_Obs)
 #   - Tasso forward a lungo termine (ufr)
@@ -29,14 +29,13 @@ alpha = 0.142068; # Il parametro di velocità di convergenza alpha controlla la 
 M_Target = np.transpose(np.arange(1,66)) # Per quali scadenze vogliamo calcolare i tassi con l'algoritmo SW. In questo caso, per ogni anno fino a 65.
 
 ## Implementazione
-b = SWCalibrate(r_Obs,M_Obs, ufr, alpha) # La calibrazione delle funzioni kernel è effettuata dalla funzione Calibrate_b.
+b = SWCalibrazione(r_Obs,M_Obs, ufr, alpha) # La calibrazione delle funzioni kernel è effettuata dalla funzione Calibrate_b.
 
-r_Target = SWExtrapolate(M_Target,M_Obs, b, ufr, alpha)  # L'interpolazione/estrapolazione delle scadenze desiderate viene eseguita dalla funzione ExtrapolateSW.
+r_Target = SWEstrapolazione(M_Target,M_Obs, b, ufr, alpha)  # L'interpolazione/estrapolazione delle scadenze desiderate viene eseguita dalla funzione ExtrapolateSW.
 print("The interpolated/extrapolated rates are:")
 print(r_Target)
 
 ## Test
-
 """ Il vettore "expected" contiene i valori dall'implementazione di Excel rilasciata da EIOPA. Questo non è necessario per i calcoli effettivi, 
 ma viene utilizzato alla fine per mostrare la bontà del fit. La seconda norma della differenza tra i risultati di Excel e l'implementazione in Python viene mostrata di seguito
 per verificare se il algoritmo funziona corretamente."""
