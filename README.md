@@ -38,9 +38,9 @@ Questa implementazione presupponga che i rendimenti siano calcolati sui ZCB. Que
 
 L'implementazione è divisa in due parti:
 
-- Le informazioni di mercato disponibili e i parametri vengono utilizzati per "calibrare" l'algoritmo. Ciò restituisce un vettore di calibrazione che può essere utilizzato per interpolare o estrapolare le scadenze desiderate. Questo viene fatto calibrando le funzioni kernel. Consultare la funzione `SWCalibrate()``.
+- Le informazioni di mercato disponibili e i parametri vengono utilizzati per "calibrare" l'algoritmo. Ciò restituisce un vettore di calibrazione che può essere utilizzato per interpolare o estrapolare le scadenze desiderate. Questo viene fatto calibrando le funzioni kernel. Consultare la funzione `SWCalibrazione()``.
 
-- I rendimenti per i ZCB con le scadenze desiderate vengono interpolati/estrapolati. Consultare la funzione `SWExtrapolate()``.
+- I rendimenti per i ZCB con le scadenze desiderate vengono interpolati/estrapolati. Consultare la funzione `SWEstrapolazione()``.
 
 Questo rilascio cerca di essere coerente con le specifiche tecniche di EIOPA.
 
@@ -49,8 +49,8 @@ Nell mercato osserviamo 6 instrumenti ZCB con scadenze di 1, 2, 4, 5, 6 e 7 anni
 
 ```bash
 import numpy as np
-from SWCalibrate import SWCalibrate as SWCalibrate
-from SWExtrapolate import SWExtrapolate as SWExtrapolate
+from SWCalibrazione import SWCalibrazione as SWCalibrazione
+from SWEstrapolazione import SWEstrapolazione as SWEstrapolazione
 
 # Rendimenti osservati sul mercato
 r_Obs = np.transpose(np.array([0.01, 0.02, 0.03, 0.032, 0.035, 0.04])) 
@@ -68,10 +68,10 @@ alpha = 0.15
 M_Target = np.transpose(np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20])) 
 
 # Calcolo del vettore di calibrazione
-b = SWCalibrate(r_Obs,M_Obs, ufr, alpha) 
+b = SWCalibrazione(r_Obs,M_Obs, ufr, alpha) 
 
 # Calcolo dei rendimenti desiderati
-r_Target = SWExtrapolate(M_Target,M_Obs, b, ufr, alpha)
+r_Target = SWEstrapolazione(M_Target,M_Obs, b, ufr, alpha)
 
 # Visualizzazione dei rendimenti desiderati
 print("The interpolated/extrapolated rates are:") 
@@ -84,12 +84,12 @@ Il'file main.py contiene un esempio tratto dallo dalla implementazione in Excel 
 ### Nota:
 Per estrapolare la curva, è sufficiente conoscere i parametri aggiuntivi (`alpha` e `ufr`), le scadenze utilizzate per la calibrazione e il vettore `b*Q`. 
 
-In tal caso, non è difficile modificare la funzione `SWExtrapolate()` in modo da accettare come input `Q*b` invece di `b`. Un esempio di tale implementazione può essere visualizato in questo [Jupyter Notebook](https://github.com/open-source-modelling/EIOPA_smith_wilson_test) (in inglese) 
+In tal caso, non è difficile modificare la funzione `SWEstrapolazione()` in modo da accettare come input `Q*b` invece di `b`. Un esempio di tale implementazione può essere visualizato in questo [Jupyter Notebook](https://github.com/open-source-modelling/EIOPA_smith_wilson_test) (in inglese) 
 
 Un esempio di questo formato è il tasso privo di rischio mensile pubblicato dall'Autorità europea per l'assicurazione e la previdenza professionale [sito EIOPA ufficiale](https://www.eiopa.europa.eu/tools-and-data/)
 
 
-To extrapolate the curve, it is enough to know the additional parameters (alpha and ufr), the maturities used for calibration and the vector b*Q. If this is the case, it is not difficult to modify the function `SWExtrapolate()` to take as input Qb instead of b. An example of such an implementation can be seen in this Jupyter Notebook https://github.com/open-source-modelling/EIOPA_smith_wilson_test. An example of this format is the monthly risk free rate published by the European Insurance and Occupational Pensions Authority 
+To extrapolate the curve, it is enough to know the additional parameters (alpha and ufr), the maturities used for calibration and the vector b*Q. If this is the case, it is not difficult to modify the function `SWEstrapolazione()` to take as input Qb instead of b. An example of such an implementation can be seen in this Jupyter Notebook https://github.com/open-source-modelling/EIOPA_smith_wilson_test. An example of this format is the monthly risk free rate published by the European Insurance and Occupational Pensions Authority 
 
 </br>
 
