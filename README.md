@@ -8,7 +8,7 @@
 
 L'algoritmo Smith & Wilson è un algoritmo ampiamente utilizzato che consente di interpolare ed estrapolare curve di rendimento di strumenti finanziari come titoli di stato e tassi privi di rischio. 
 
-Questa implementazione si basa sulla [documentazione tecnica](https://www.eiopa.europa.eu/sites/default/files/risk_free_interest_rate/12092019-technical_documentation.pdf)  della metodologia per derivare la struttura a termine dei tassi di interesse privi di rischio di EIOPA.
+Questa implementazione si basa sulla [documentazione tecnica](https://www.eiopa.europa.eu/system/files/2022-09/eiopa-bos-22-409-technical-documentation.pdf)  della metodologia per derivare la struttura a termine dei tassi di interesse privi di rischio di EIOPA.
 
 Il link fa riferimento alla versione pubblicata il 12/09/2019. Consultare la sezione 7.
 
