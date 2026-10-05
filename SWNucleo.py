@@ -19,7 +19,9 @@ def SWNucleo(u, v, alpha):
     """
     
     import numpy as np
-   
+
+    u = np.ravel(u) # accetta sia vettori unidimensionali sia vettori colonna n x 1
+    v = np.ravel(v)
     u_Mat = np.tile(u, [v.size, 1]).transpose()
     v_Mat = np.tile(v, [u.size, 1])
     

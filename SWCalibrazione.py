@@ -10,8 +10,10 @@ def SWCalibrazione(r, M, ufr, alpha):
         ufr: Numero decimale rappresentante il tasso forward definitivo. Esempio: ufr = 0.042
         alpha: Numero decimale rappresentante il parametro che guida la velocità di convergenza. Esempio: alpha = 0.05
 
+    r e M possono essere vettori colonna n x 1 o vettori unidimensionali di lunghezza n.
+
     Ritorna:
-        ndarray n x 1 che rappresenta il vettore di calibrazione necessario per l'interpolazione ed estrapolazione. Esempio: b = np.array([[14], [-21]])
+        ndarray unidimensionale di lunghezza n che rappresenta il vettore di calibrazione necessario per l'interpolazione ed estrapolazione. Esempio: b = np.array([14, -21])
 
     Per ulteriori informazioni, consultare la documentazione su:
     https://www.eiopa.europa.eu/sites/default/files/risk_free_interest_rate/12092019-technical_documentation.pdf
@@ -20,6 +22,8 @@ def SWCalibrazione(r, M, ufr, alpha):
     import numpy as np
     from SWNucleo import SWNucleo as SWNucleo
 
+    r = np.ravel(r)
+    M = np.ravel(M)
     C = np.identity(M.size)
     p = (1+r) **(-M)  # Trasforma i tassi in prezzi di mercato impliciti di un titolo zero-coupon
     d = np.exp(-np.log(1+ufr) * M)     # Calcola il vettore d descritto nel paragrafo 138
@@ -27,4 +31,4 @@ def SWCalibrazione(r, M, ufr, alpha):
     q = C.transpose() @ d                         # Vettore q descritto nel paragrafo 139
     H = SWNucleo(M, M, alpha)  # Parte centrale della funzione Wilson dal paragrafo 132
 
-    return np.linalg.inv(Q.transpose() @ H @ Q) @ (p-q)           # Vettore di calibrazione b dal paragrafo 149
+    return np.linalg.solve(Q.transpose() @ H @ Q, p-q) # Vettore di calibrazione b dal paragrafo 149, risolvendo il sistema lineare invece di invertire la matrice
